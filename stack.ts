@@ -1,4 +1,5 @@
 interface StackInterface<T> {
+    data: T[];
     push(item: T): void;
     pop(): T | null | undefined;
 }
