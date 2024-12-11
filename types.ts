@@ -89,3 +89,13 @@ function createPair<Z, T>(v1: Z, v2: T): [Z, T] {
     return [v1, v2];
 }
 console.log(createPair<string, number>('hello', 42)); // ['hello', 42]
+
+// Class
+class Box<T, T2> {
+    contents: T;
+    constructor(value: T, x: T2) {
+        this.contents = value;
+    }
+}
+
+const b = new Box<string, number>("hello!", 1);
