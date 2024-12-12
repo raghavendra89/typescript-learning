@@ -99,3 +99,12 @@ class Box<T, T2> {
 }
 
 const b = new Box<string, number>("hello!", 1);
+
+type Params = {
+  first: number,
+  second: number
+}
+
+const addNumbers: (params: Params) => number = (params) => {
+  return params.first + params.second;
+}
