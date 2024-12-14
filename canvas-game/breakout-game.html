@@ -15,6 +15,9 @@
             display: block;
             margin: 0 auto;
         }
+        .d-none {
+            display: none;
+        }
         .d-flex {
             display: flex;
             max-width: 480px;
@@ -37,6 +40,7 @@
             line-height: 1.5;
             text-align: center;
             border: 1px solid transparent;
+            margin: 6px 12px;
             padding: 6px 12px;
             font-size: 16px;
             border-radius: .25rem;
@@ -46,6 +50,18 @@
             color: #fff;
             background-color: #0b5ed7;
             border-color: #0a58ca;
+        }
+        .btn-secondary {
+            background-color: rgb(108, 117, 125);
+        }
+        .btn-secondary:hover {
+            background-color: rgb(92, 99, 106);
+        }
+        .btn-success {
+            background-color: rgb(25, 135, 84);
+        }
+        .btn-success:hover {
+            background-color: rgb(21, 115, 71);
         }
     </style>
 </head>
@@ -59,7 +75,9 @@
         <canvas id="my-canvas" width="480" height="320"></canvas>
 
         <div class="d-flex justify-center">
-            <button id="start-game">Start Game</button>
+            <button class="btn-success" id="start-game">Start Game</button>
+            <button class="d-none btn-secondary" id="pause-game">Pause Game</button>
+            <button class="d-none" id="new-game">New Game</button>
         </div>
     </div>
 

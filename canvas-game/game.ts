@@ -26,7 +26,8 @@ type GameState = {
     rightPressed: boolean,
     leftPressed: boolean,
     score: number,
-    lives: number
+    lives: number,
+    gamePaused?: boolean
 }
 
 interface GameBoard {
@@ -102,7 +103,8 @@ class Game implements GameBoard {
             rightPressed: false,
             leftPressed: false,
             score: 0,
-            lives: 3
+            lives: 3,
+            gamePaused: false
         };
 
         for(var c=0; c<this.params.brickRowCount; c++) {
@@ -111,6 +113,15 @@ class Game implements GameBoard {
                 this.params.bricks[c][r] = { x: 0, y: 0, status: 1 };
             }
         }
+    }
+
+    pause: () => void = () => {
+        this.gameState.gamePaused = true;
+    }
+
+    resume: () => void = () => {
+        this.gameState.gamePaused = false;
+        this.play();
     }
 
     updateStats: () => void = () => {
@@ -131,6 +142,10 @@ class Game implements GameBoard {
 
     play: () => void = () => {
         this.draw();
+
+        if (this.gameState.gamePaused) {
+            return;
+        }
 
         if (! this.gameState.lives) {
             alert("GAME OVER");
@@ -237,6 +252,9 @@ class Game implements GameBoard {
 }
 
 const canvas: HTMLCanvasElement = document.getElementById('my-canvas') as HTMLCanvasElement;
+const newGameBtn = document.getElementById('new-game') as HTMLElement;
+const startBtn = document.getElementById('start-game') as HTMLElement;
+const pauseBtn = document.getElementById('pause-game') as HTMLElement;
 
 const game: Game = new Game(
                         canvas,
@@ -254,8 +272,25 @@ const game: Game = new Game(
                     );
 game.draw();
 
-(document.getElementById('start-game') as HTMLElement)
-        .addEventListener('click', () => {
-            game.resetGame();
-            game.play();
-        });
+newGameBtn.addEventListener('click', (e) => {
+    game.pause();
+    game.resetGame();
+    game.draw();
+    startBtn.classList.remove('d-none');
+    pauseBtn.classList.add('d-none');
+    newGameBtn.classList.add('d-none');
+});
+
+startBtn.addEventListener('click', (e) => {
+    game.resume();
+    startBtn.classList.add('d-none');
+    pauseBtn.classList.remove('d-none');
+    newGameBtn.classList.add('d-none');
+});
+
+pauseBtn.addEventListener('click', (e) => {
+    game.pause();
+    startBtn.classList.remove('d-none');
+    pauseBtn.classList.add('d-none');
+    newGameBtn.classList.remove('d-none');
+});
