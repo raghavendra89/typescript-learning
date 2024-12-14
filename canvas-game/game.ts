@@ -132,6 +132,11 @@ class Game implements GameBoard {
     play: () => void = () => {
         this.draw();
 
+        if (! this.gameState.lives) {
+            alert("GAME OVER");
+            return;
+        }
+
         if (this.gameState.score == this.params.brickColumnCount*this.params.brickRowCount) {
             // If there are no bricks left, then the game is won
             alert("YOU WIN, CONGRATS!");
@@ -152,10 +157,7 @@ class Game implements GameBoard {
             }
             else {
                 this.gameState.lives--;
-                if(!this.gameState.lives) {
-                    alert("GAME OVER");
-                }
-                else {
+                if(this.gameState.lives) {
                     this.gameState.x = this.canvas.width/2;
                     this.gameState.y = this.canvas.height-30;
                     this.gameState.dx = 4;
@@ -256,5 +258,6 @@ game.draw();
 
 (document.getElementById('start-game') as HTMLElement)
         .addEventListener('click', () => {
+            game.resetGame();
             game.play();
         });
