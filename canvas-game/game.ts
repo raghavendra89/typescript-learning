@@ -176,9 +176,7 @@ class Game implements GameBoard {
 
         this.gameState.x += this.gameState.dx;
         this.gameState.y += this.gameState.dy;
-        if(this.gameState.lives) {
-            requestAnimationFrame(this.play);
-        }
+        requestAnimationFrame(this.play);
     }
 
     drawBricks: () => void = () => {
