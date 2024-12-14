@@ -125,6 +125,8 @@ class Game implements GameBoard {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawBricks();
         this.drawBall();
+        this.drawPaddle();
+        this.updateStats();
     }
 
     play: () => void = () => {
@@ -152,6 +154,21 @@ class Game implements GameBoard {
     drawBall: () => void = () => {
         this.ctx.beginPath();
         this.ctx.arc(this.gameState.x, this.gameState.y, this.params.ballRadius, 0, Math.PI*2);
+        this.ctx.fillStyle = "#263238";
+        this.ctx.fill();
+        this.ctx.closePath();
+    }
+
+    drawPaddle: () => void = () => {
+        this.ctx.beginPath();
+
+        this.ctx.rect(
+            this.gameState.paddleX,
+            this.canvas.height-this.params.paddleHeight,
+            this.params.paddleWidth,
+            this.params.paddleHeight
+        );
+
         this.ctx.fillStyle = "#263238";
         this.ctx.fill();
         this.ctx.closePath();
