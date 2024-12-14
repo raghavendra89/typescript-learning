@@ -131,6 +131,52 @@ class Game implements GameBoard {
 
     play: () => void = () => {
         this.draw();
+
+        if (this.gameState.score == this.params.brickColumnCount*this.params.brickRowCount) {
+            // If there are no bricks left, then the game is won
+            alert("YOU WIN, CONGRATS!");
+            return;
+        }
+
+        this.collisionDetection();
+
+        if(this.gameState.x + this.gameState.dx > this.canvas.width-this.params.ballRadius || this.gameState.x + this.gameState.dx < this.params.ballRadius) {
+            this.gameState.dx = -this.gameState.dx;
+        }
+        if(this.gameState.y + this.gameState.dy < this.params.ballRadius) {
+            this.gameState.dy = -this.gameState.dy;
+        }
+        else if(this.gameState.y + this.gameState.dy > this.canvas.height-this.params.ballRadius) {
+            if(this.gameState.x > this.gameState.paddleX && this.gameState.x < this.gameState.paddleX + this.params.paddleWidth) {
+                this.gameState.dy = -this.gameState.dy;
+            }
+            else {
+                this.gameState.lives--;
+                if(!this.gameState.lives) {
+                    alert("GAME OVER");
+                }
+                else {
+                    this.gameState.x = this.canvas.width/2;
+                    this.gameState.y = this.canvas.height-30;
+                    this.gameState.dx = 4;
+                    this.gameState.dy = -4;
+                    this.gameState.paddleX = (this.canvas.width-this.params.paddleWidth)/2;
+                }
+            }
+        }
+
+        if(this.gameState.rightPressed && this.gameState.paddleX < this.canvas.width-this.params.paddleWidth) {
+            this.gameState.paddleX += 7;
+        }
+        else if(this.gameState.leftPressed && this.gameState.paddleX > 0) {
+            this.gameState.paddleX -= 7;
+        }
+
+        this.gameState.x += this.gameState.dx;
+        this.gameState.y += this.gameState.dy;
+        if(this.gameState.lives) {
+            requestAnimationFrame(this.play);
+        }
     }
 
     drawBricks: () => void = () => {
@@ -172,6 +218,21 @@ class Game implements GameBoard {
         this.ctx.fillStyle = "#263238";
         this.ctx.fill();
         this.ctx.closePath();
+    }
+
+    collisionDetection: () => void = () => {
+        for(var c=0; c<this.params.brickRowCount; c++) {
+            for(var r=0; r<this.params.brickColumnCount; r++) {
+                var b = this.params.bricks[c][r];
+                if(b.status == 1) {
+                    if(this.gameState.x > b.x && this.gameState.x < b.x+this.params.brickWidth && this.gameState.y > b.y && this.gameState.y < b.y+this.params.brickHeight) {
+                        this.gameState.dy = -this.gameState.dy;
+                        b.status = 0;
+                        this.gameState.score++;
+                    }
+                }
+            }
+        }
     }
 }
 
