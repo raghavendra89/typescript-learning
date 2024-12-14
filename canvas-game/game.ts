@@ -95,7 +95,7 @@ class Game implements GameBoard {
     resetGame: () => void = () => {
         this.gameState = {
             x: this.canvas.width / 2,
-            y: this.canvas.height / 2,
+            y: this.canvas.height - 20,
             dx: 4,
             dy: -4,
             paddleX: (this.canvas.width - this.params.paddleWidth) / 2,
